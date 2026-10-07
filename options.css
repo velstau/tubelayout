@@ -1,0 +1,502 @@
+/*
+ * TubeLayout の設定画面。デジタル庁デザインシステム（DADS）の基礎（カラー・タイポグラフィ・余白・角の形状・フォーカス）に合わせる。
+ * https://design.digital.go.jp/dads/
+ *
+ * - 色は DADS のプリミティブ／ニュートラルカラー（公式 design-tokens v2.0.1 の値）から選ぶ。
+ *   文字は背景に対して 4.5:1 以上、枠線などの非テキストは 3:1 以上を保つ
+ * - 書体は Noto Sans JP（未導入の環境ではシステムの日本語ゴシック）。テキストスタイルは DADS の
+ *   Std（本文・見出し）と Oln（ボタンなどの 1 行テキスト）。本文と UI は 16px 以上（ユーザーの必須要望の 1rem 以上も満たす）
+ * - 余白は 8px 単位、角丸は DADS の「スモール 8px」「ミディアム 12px」
+ * - フォーカスは DADS のフォーカスカラー（Yellow-300 と Black の二重構造）。変更してはいけない
+ * - OS がダークモードでも白背景で表示する（ユーザーの要望。DADS にもダークテーマの定義はない）
+ */
+:root {
+  /* DADS カラー（ライト） */
+  --c-bg: #FFFFFF;                 /* White */
+  --c-surface: #F2F2F2;            /* Solid Gray 50 */
+  --c-text: #1A1A1A;               /* Solid Gray 900 */
+  --c-text-sub: #4D4D4D;           /* Solid Gray 700（白地 8.5:1） */
+  --c-border: #949494;             /* Solid Gray 420（白地 3:1。UI の枠線） */
+  --c-divider: #CCCCCC;            /* Solid Gray 200（区切り線。装飾） */
+  --c-primary: #0017C1;            /* Blue 900（主色。白地 10:1 以上） */
+  --c-primary-hover: #00118F;      /* Blue 1000 */
+  --c-primary-surface: #E8F1FE;    /* Blue 50（選択中の面） */
+  --c-on-primary: #FFFFFF;
+  --c-success: #197A4B;            /* Green 800 */
+  --c-error: #CE0000;              /* Red 900 */
+  --c-focus-ring: #FFD43D;         /* Yellow 300（フォーカスカラー） */
+  --c-focus-outline: #000000;      /* Black（フォーカスカラー） */
+
+  /* 見取り図 */
+  --c-mock-bg: #FFFFFF;
+  --c-mock-line: #666666;          /* Solid Gray 600（白地 5.7:1） */
+  --c-mock-fill: #F2F2F2;          /* Solid Gray 50 */
+  --c-mock-fill-strong: #D9E6FF;   /* Blue 100（プレイヤーなど主要な部品） */
+  --c-mock-text: #1A1A1A;
+  --c-mock-muted: #CCCCCC;         /* 文字の行を表す線（装飾） */
+  --c-mock-hot: #0017C1;           /* 選択中・ホバー中の部品 */
+  --c-mock-edge: #CE0000;          /* 画面の下端 */
+
+  --font: "Noto Sans JP", "Noto Sans CJK JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
+
+  /* 余白（8px 単位） */
+  --s-1: 8px;
+  --s-2: 16px;
+  --s-3: 24px;
+  --s-4: 32px;
+  --s-5: 40px;
+  --s-8: 64px;
+
+  /* 角の形状 */
+  --r-small: 8px;
+  --r-medium: 12px;
+
+  color-scheme: light;
+}
+
+
+* { box-sizing: border-box; }
+
+html { font-size: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  /* Std-16N-170 */
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+/* フォーカス: DADS のフォーカスカラー（Yellow-300 の内側の環と Black の外側の線） */
+:focus-visible {
+  outline: 4px solid var(--c-focus-outline);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--c-focus-ring);
+}
+
+/* ---- ヘッダー ---- */
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-3);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--s-5) var(--s-4) var(--s-3);
+  border-bottom: 1px solid var(--c-border);
+}
+.eyebrow {
+  margin: 0;
+  /* Std-16B-170 */
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--c-text-sub);
+}
+h1 {
+  margin: var(--s-1) 0 0;
+  /* Std-32B-150 */
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* ---- 2 段組: 左に見取り図、右に設定 ---- */
+.desk {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(400px, 1fr);
+  gap: var(--s-5);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--s-4) var(--s-4) calc(var(--s-8) * 2);
+  align-items: start;
+}
+
+.board {
+  position: sticky;
+  top: var(--s-3);
+}
+.board h2, .card h2 {
+  margin: 0;
+  /* Std-24B-150 */
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+.board-note {
+  margin: var(--s-1) 0 var(--s-2);
+  color: var(--c-text-sub);
+}
+
+.mock-frame {
+  padding: var(--s-2);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-medium);
+}
+
+/* 見取り図本体。要素は options.js が仮想座標（幅 1920 × 高さ 1500）から % で置く */
+.mock {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1920 / 1500;
+  overflow: hidden;
+  background: var(--c-mock-bg);
+  border: 1px solid var(--c-mock-line);
+  border-radius: var(--r-small);
+}
+body.disabled .mock { opacity: 0.4; filter: grayscale(1); }
+
+.m {
+  position: absolute;
+  border: 1.5px solid var(--c-mock-line);
+  background: var(--c-mock-fill);
+  border-radius: 2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .m { transition: left 0.3s ease, top 0.3s ease, width 0.3s ease, height 0.3s ease, border-radius 0.2s ease; }
+}
+.m[data-section] { cursor: pointer; }
+.m[data-section]:hover, .m.lit { border-color: var(--c-mock-hot); outline: 3px solid var(--c-mock-hot); outline-offset: -1px; z-index: 1; }
+.m.ghost { border-style: dashed; background: transparent; }
+.m.solid { background: var(--c-mock-fill-strong); }
+.m.line { border: 0; background: var(--c-mock-muted); pointer-events: none; }
+.m.mast { border-width: 0 0 1.5px; border-radius: 0; background: var(--c-mock-fill); }
+.m.player.glow { outline: 6px solid var(--c-mock-fill-strong); outline-offset: 0; }
+.m.screen-edge {
+  height: 0;
+  border: 0;
+  border-top: 2px dashed var(--c-mock-edge);
+  background: transparent;
+  pointer-events: none;
+}
+.m .tag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* Oln-16B-100 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--c-mock-text);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.m .tag.top { top: var(--s-1); transform: translateX(-50%); }
+.banner {
+  position: absolute;
+  left: 50%;
+  top: var(--s-1);
+  transform: translateX(-50%);
+  padding: var(--s-1) var(--s-2);
+  border-radius: var(--r-small);
+  background: var(--c-primary);
+  color: var(--c-on-primary);
+  /* Oln-16B-100 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.board-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--s-1);
+  margin: var(--s-2) 0 0;
+  color: var(--c-text-sub);
+}
+.legend-line { width: var(--s-4); border-top: 2px dashed var(--c-mock-edge); }
+
+/* ---- 設定 ---- */
+.panel { display: grid; gap: var(--s-3); }
+
+.card {
+  padding: var(--s-3);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-medium);
+  scroll-margin-top: var(--s-3);
+}
+.card.lit { border-color: var(--c-primary); box-shadow: inset 4px 0 0 var(--c-primary); }
+.card.flash { box-shadow: inset 4px 0 0 var(--c-primary); }
+body.disabled .card:not(.always) { opacity: 0.6; }
+.card-head { margin-bottom: var(--s-1); }
+.card-lead { margin: 0 0 var(--s-2); color: var(--c-text-sub); }
+
+.item {
+  padding: var(--s-2) 0;
+  border-top: 1px solid var(--c-divider);
+}
+.item:first-of-type { border-top: 0; }
+.item[hidden] { display: none; }
+.item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-1) var(--s-2);
+}
+.item-title {
+  /* Std-17B-170 */
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.7;
+}
+.hint { margin: var(--s-1) 0 0; color: var(--c-text-sub); }
+
+/* 「再読み込みで反映」の札 */
+.reload-mark {
+  display: inline-block;
+  margin-left: var(--s-1);
+  padding: 4px var(--s-1);
+  border-radius: 4px;
+  background: var(--c-primary-surface);
+  color: var(--c-primary);
+  border: 1px solid var(--c-primary);
+  /* Oln-16B-100 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: 2px;
+}
+
+/* 図入りの選択肢。選択中は枠と面の色に加え、ラジオボタンの丸印でも示す（色だけで伝えない） */
+.segment {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--s-1);
+  margin-top: var(--s-1);
+}
+.seg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  min-height: 48px;
+  padding: var(--s-2) var(--s-1);
+  font: inherit;
+  color: var(--c-text);
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-small);
+  cursor: pointer;
+}
+.seg:hover { border-color: var(--c-primary); }
+.seg:hover .seg-label { text-decoration: underline; text-underline-offset: 3px; }
+.seg[aria-pressed="true"] {
+  border: 2px solid var(--c-primary);
+  padding: calc(var(--s-2) - 1px) calc(var(--s-1) - 1px);
+  background: var(--c-primary-surface);
+}
+.seg-indicator {
+  position: absolute;
+  top: var(--s-1);
+  left: var(--s-1);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--c-border);
+  border-radius: 50%;
+  background: var(--c-bg);
+}
+.seg[aria-pressed="true"] .seg-indicator { border-color: var(--c-primary); }
+.seg[aria-pressed="true"] .seg-indicator::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--c-primary);
+}
+.seg svg { width: 72px; height: 46px; }
+.seg svg .fr { fill: none; stroke: currentColor; stroke-width: 1.5; opacity: 0.6; }
+.seg svg .bx { fill: currentColor; opacity: 0.25; }
+.seg svg .hl { fill: var(--c-primary); }
+.seg-label {
+  /* Oln-16B-100 に近い。複数行になりうるので行高は 1.3 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* チェックボックス（DADS には切り替えスイッチがないため、チェックボックスにする） */
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  cursor: pointer;
+}
+.check-row .item-title { flex: 1; }
+.checkbox {
+  position: relative;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 4px 0 0;
+  appearance: none;
+  border: 2px solid var(--c-text-sub);
+  border-radius: 4px;
+  background: var(--c-bg);
+  cursor: pointer;
+}
+.checkbox:hover { border-color: var(--c-primary); }
+.checkbox:checked { border-color: var(--c-primary); background: var(--c-primary); }
+.checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 1px;
+  width: 7px;
+  height: 13px;
+  border: solid var(--c-on-primary);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+/* 全体の有効・無効（大きめのチェックボックス） */
+.master {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-small);
+  cursor: pointer;
+  /* Oln-17B-100 */
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.master .checkbox { width: 32px; height: 32px; margin: 0; }
+.master .checkbox:checked::after { left: 9px; top: 3px; width: 9px; height: 17px; }
+
+/* 数値（スライダー）。0（既定）のときは「既定」と表示し、つまみを白抜きにする */
+.value {
+  flex: none;
+  min-width: 7em;
+  padding: var(--s-1) var(--s-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-small);
+  /* Oln-16B-100 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.value.default { font-weight: 400; color: var(--c-text-sub); background: var(--c-surface); }
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: var(--s-1);
+}
+input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--c-primary) var(--fill, 0%), var(--c-border) var(--fill, 0%));
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  margin-top: -8px;
+  border-radius: 50%;
+  background: var(--c-primary);
+  border: 2px solid var(--c-bg);
+  box-shadow: 0 0 0 1px var(--c-primary);
+}
+input[type="range"].is-default::-webkit-slider-runnable-track { background: var(--c-border); }
+input[type="range"].is-default::-webkit-slider-thumb { background: var(--c-bg); border: 2px solid var(--c-text-sub); box-shadow: none; }
+
+/* ボタン。DADS の塗り（プライマリー）・アウトライン・テキストの 3 種。ホバーは下線と色の変化 */
+.btn {
+  min-height: 48px;
+  padding: var(--s-1) var(--s-2);
+  font: inherit;
+  /* Oln-16B-100 */
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  border-radius: var(--r-small);
+  cursor: pointer;
+}
+.btn:hover { text-decoration: underline; text-underline-offset: 3px; }
+.btn-outline {
+  color: var(--c-primary);
+  background: var(--c-bg);
+  border: 1px solid var(--c-primary);
+}
+.btn-outline:hover { background: var(--c-primary-surface); }
+.btn-text {
+  min-height: 32px;
+  padding: 4px var(--s-1);
+  color: var(--c-primary);
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.btn-text:hover { text-decoration-thickness: 3px; }
+.btn-text[disabled] { color: var(--c-text-sub); text-decoration: none; cursor: default; opacity: 0.6; }
+
+/* 動作の確認 */
+.diag {
+  display: grid;
+  grid-template-columns: 10em 1fr;
+  gap: var(--s-1) var(--s-2);
+  margin: 0;
+}
+.diag dt { font-weight: 700; }
+.diag dd { margin: 0; overflow-wrap: anywhere; }
+.diag .bad { color: var(--c-error); font-weight: 700; }
+.diag .bad::before { content: "要確認："; }
+
+/* 下の帯 */
+.dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  background: var(--c-bg);
+  border-top: 1px solid var(--c-border);
+  z-index: 10;
+}
+.status { margin: 0; font-weight: 700; color: var(--c-success); }
+
+/* 狭い画面: 見取り図を上、設定を下に */
+@media (max-width: 1080px) {
+  .desk { grid-template-columns: 1fr; padding-left: var(--s-2); padding-right: var(--s-2); }
+  .board { position: static; }
+  .masthead { padding-left: var(--s-2); padding-right: var(--s-2); }
+}
+@media (max-width: 560px) {
+  .diag { grid-template-columns: 1fr; }
+  .dock { padding: var(--s-2); }
+}

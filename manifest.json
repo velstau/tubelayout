@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "TubeLayout",
+  "version": "0.6.0",
+  "description": "YouTube の再生ページの配置（プレイヤーの大きさ・関連動画・コメント・タイトル周り）を設定で変えます。",
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "TubeLayout の設定を開く",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "page.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "settings.js",
+        "content.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzEMbtRHJBSMiZdqpF6GEUS0myQDQQgGuRqTfJ87qasWwZ2XcsvNr34GpEin0sMHiNb1OLLrFemJOCCSQ2r7OuwtNY7q1Ia5fOgH1RGVCuTRDSvwzqd8d1Cq53Pu+Mh8HvZpdQsiclUWE7cgYBbiiPnIeKb7oF9Y1IZgXGBGLeq5EKGqxKv6fbyBQEikO5kgbEiqpTX9H/vEqKttx4bTo5eq7FfS+VmWvnVPq1WWFfMspmrwpzak5H7rewtpupS6bocs0ZgSYbD0vL7bZsHgfPJv/IWcUc9XCdXvX4K4ouxGSEQs6VRbZd3nsx98NeNvZ15Pey8B0I6kq1uw8piMTXQIDAQAB"
+}

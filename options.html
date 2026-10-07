@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TubeLayout の設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand">
+      <p class="eyebrow">YouTube 再生ページの配置</p>
+      <h1>TubeLayout の設定</h1>
+    </div>
+    <label class="master">
+      <input type="checkbox" class="checkbox" id="enabled">
+      <span>TubeLayout を有効にする</span>
+    </label>
+  </header>
+
+  <main class="desk">
+    <!-- 見取り図。options.js が設定から描く。図の各部分をクリックすると、その設定へ移動する -->
+    <section class="board" aria-labelledby="board-title">
+      <h2 id="board-title">見取り図</h2>
+      <p class="board-note">設定に合わせて動きます。図の部分をクリックすると、その設定へ移動します。</p>
+      <div class="mock-frame">
+        <div class="mock" id="mock" role="img" aria-label="設定から描いた再生ページの配置の見取り図"></div>
+      </div>
+      <p class="board-legend"><span class="legend-line"></span>画面の下端（高さ 900px のウィンドウの場合）</p>
+    </section>
+
+    <!-- 設定。各項目は options.js が SECTIONS から組み立てる -->
+    <section class="panel" id="panel" aria-label="設定"></section>
+  </main>
+
+  <footer class="dock">
+    <button type="button" id="reset" class="btn btn-outline">すべて既定に戻す</button>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </footer>
+
+  <script src="settings.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

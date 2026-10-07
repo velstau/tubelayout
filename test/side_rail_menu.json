@@ -1,0 +1,166 @@
+{
+ "sideRailViewModel": {
+  "buttons": [
+   {
+    "toggleButtonViewModel": {
+     "defaultButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "INFO",
+       "title": "概要",
+       "accessibilityText": "概要",
+       "type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-structured-description",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     },
+     "toggledButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "INFO",
+       "title": "概要",
+       "accessibilityText": "概要",
+       "type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-structured-description",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "toggleButtonViewModel": {
+     "defaultButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "COMMENT",
+       "title": "コメント",
+       "accessibilityText": "コメント",
+       "type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-comments-section",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     },
+     "toggledButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "COMMENT",
+       "title": "コメント",
+       "accessibilityText": "コメント",
+       "type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-comments-section",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "toggleButtonViewModel": {
+     "defaultButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "SPARK",
+       "title": "質問する",
+       "accessibilityText": "質問する",
+       "type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "PAyouchat",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     },
+     "toggledButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "SPARK",
+       "title": "質問する",
+       "accessibilityText": "質問する",
+       "type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "PAyouchat",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "toggleButtonViewModel": {
+     "defaultButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "CHAT",
+       "title": "チャットの再生",
+       "accessibilityText": "チャットの再生",
+       "type": "BUTTON_VIEW_MODEL_TYPE_TONAL",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-live-chat",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     },
+     "toggledButtonViewModel": {
+      "buttonViewModel": {
+       "iconName": "CHAT",
+       "title": "チャットの再生",
+       "accessibilityText": "チャットの再生",
+       "type": "BUTTON_VIEW_MODEL_TYPE_FILLED",
+       "buttonSize": "BUTTON_VIEW_MODEL_SIZE_DEFAULT",
+       "iconPosition": "BUTTON_VIEW_MODEL_ICON_POSITION_ABOVE",
+       "onTap": {
+        "innertubeCommand": {
+         "changeEngagementPanelVisibilityAction": {
+          "targetId": "engagement-panel-live-chat",
+          "visibility": "ENGAGEMENT_PANEL_VISIBILITY_EXPANDED"
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  ]
+ }
+}
