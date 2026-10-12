@@ -14,6 +14,9 @@ var TubeLayoutDefaults = {
   sideRail: 'default', // default（右端に縦） | top（右の列の先頭に横一列） | hidden
 
   // プレイヤー
+  // 動画の縦横比（4:3 など）によらずプレイヤーの高さをそろえる。枠を 16:9 に固定し、YouTube が動画ごとに変える関連動画の列の幅も一定にする。
+  // 縦長の動画は除く。列の幅は page.js がフラグで変えるので、タブを読み込み直したときに反映される
+  playerFixedFrame: false,
   playerFill: false, // 横幅いっぱいに広げる（画面の高さに収める上限を外す。左右の余白が出なくなる）
   playerMaxHeight: 0, // 高さの上限（画面の高さに対する %）
   playerMaxWidth: 0, // 幅の上限（px）

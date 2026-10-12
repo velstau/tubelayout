@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TubeLayout",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "YouTube の再生ページの配置（プレイヤーの大きさ・関連動画・コメント・タイトル周り）を設定で変えます。",
   "permissions": [
     "storage"

@@ -9,6 +9,8 @@
 // アクセサにして、入ってきたオブジェクトをその都度書き換える。
 //
 // 同じ方法で、2 列（右に関連動画）にする最小のウィンドウ幅（kevlar_watch_two_column_width_threshold、既定 1000px）も変える。
+// 「プレイヤーの高さをそろえる」（playerFixedFrame）のときは、関連動画の列の幅を動画の縦横比から決める処理
+// （web_watch_use_sidebar_width_percentage）を切り、列の幅を一定（kevlar_watch_secondary_width）にする。
 //
 // MAIN world からは chrome.storage を読めないので、設定は content.js が localStorage（tubelayout-page）に写した値を
 // 同期的に読む（設定を変えたときは YouTube のタブを読み込み直すと反映される）。
@@ -16,7 +18,7 @@
 (() => {
   'use strict';
 
-  const status = { classic: true, twoColumnMinWidth: 0, hooked: false, patchedObjects: 0, original: {} };
+  const status = { classic: true, twoColumnMinWidth: 0, fixedSidebar: false, hooked: false, patchedObjects: 0, original: {} };
 
   function report() {
     try {
@@ -26,8 +28,8 @@
     }
   }
 
-  // content.js が写した設定（{ classic, twoColumnMinWidth }）。読めなければ既定（以前のレイアウト・800px）
-  let config = { classic: true, twoColumnMinWidth: 800 };
+  // content.js が写した設定（{ classic, twoColumnMinWidth, fixedSidebar }）。読めなければ既定（以前のレイアウト・800px）
+  let config = { classic: true, twoColumnMinWidth: 800, fixedSidebar: false };
   try {
     const saved = JSON.parse(localStorage.getItem('tubelayout-page') || 'null');
     if (saved && typeof saved === 'object') config = { ...config, ...saved };
@@ -36,6 +38,7 @@
   }
   status.classic = !!config.classic;
   status.twoColumnMinWidth = Number(config.twoColumnMinWidth) > 0 ? Number(config.twoColumnMinWidth) : 0;
+  status.fixedSidebar = !!config.fixedSidebar;
 
   // 以前のレイアウトにするために false にするフラグ
   const CLASSIC_OFF = [
@@ -60,11 +63,13 @@
   // 書き換えるフラグと値
   //   CLASSIC_OFF: 新しいレイアウトを使わない
   //   kevlar_watch_two_column_width_threshold: 2 列にする最小のウィンドウ幅（YouTube 本体の読み込み時に 1 回だけ読まれる）
+  //   web_watch_use_sidebar_width_percentage: false で関連動画の列の幅が動画の縦横比によらず一定になる
   const OVERRIDES = {};
   if (status.classic) {
     for (const f of CLASSIC_OFF) OVERRIDES[f] = false;
   }
   if (status.twoColumnMinWidth) OVERRIDES.kevlar_watch_two_column_width_threshold = status.twoColumnMinWidth;
+  if (status.fixedSidebar) OVERRIDES.web_watch_use_sidebar_width_percentage = false;
   if (!Object.keys(OVERRIDES).length) {
     report();
     return;

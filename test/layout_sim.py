@@ -18,6 +18,7 @@
 #                          例: kevlar_watch_grid（ログイン中のアカウントに出る新しいレイアウト ytd-watch-grid を再現する）
 #             CLASSIC=0  page.js が読む localStorage を「以前のレイアウトにしない」にして始める
 #             TWO_COL=<px>  page.js が読む「2 列にする最小のウィンドウ幅」（既定 800。0 で YouTube の既定 1000）
+#             FIXED_SIDEBAR=1  page.js が読む「関連動画の列の幅を一定にする」（設定 playerFixedFrame と組で使う）
 # 各場面で test/<名前>.png を撮り、主な要素の位置と大きさ（x, y, 幅, 高さ）を出力する。
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
@@ -122,7 +123,8 @@ async def main():
         await page.add_init_script(STUB % (settings_js + '\nwindow.__tlDefaults = TubeLayoutDefaults;\n' + content_js))
         # page.js は拡張では MAIN world・document_start で動く。init script もページのスクリプトより先に動く
         # 実際の拡張では content.js が設定から localStorage に写す。最初の読み込みに間に合うよう先に入れておく
-        page_config = {'classic': os.environ.get('CLASSIC') != '0', 'twoColumnMinWidth': int(os.environ.get('TWO_COL', 800))}
+        page_config = {'classic': os.environ.get('CLASSIC') != '0', 'twoColumnMinWidth': int(os.environ.get('TWO_COL', 800)),
+                       'fixedSidebar': os.environ.get('FIXED_SIDEBAR') == '1'}
         await page.add_init_script(f"localStorage.setItem('tubelayout-page', {json.dumps(json.dumps(page_config))})")
         await page.add_init_script(page_js)
         if FORCE_FLAGS or os.environ.get('SIDE_RAIL_MENU'):

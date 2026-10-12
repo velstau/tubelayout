@@ -56,9 +56,23 @@ ${F}[is-two-columns_] #primary { min-width: 0 !important; }`);
   --ytd-watch-flexy-min-player-height: 240px !important;
 }`);
     };
+    // YouTube はプレイヤーの枠を動画の縦横比どおりに作るので、4:3 などの動画では同じ幅でも枠が高くなる。
+    // playerFixedFrame は縦長でない動画の縦横比の変数を 16:9 に固定する（動画は枠の中に黒帯付きで収まる）。
+    // YouTube は関連動画の列の幅も動画の縦横比から決める（4:3 だと列が広がりプレイヤー側が細くなる）ので、
+    // 列の幅を一定にするフラグは page.js が切る。両方そろって動画によらず同じ高さになる
+    if (s.playerFixedFrame) {
+      r.push(`${PLAYER}:not([is-vertical-video_]) { --ytd-watch-flexy-width-ratio: 16 !important; --ytd-watch-flexy-height-ratio: 9 !important; }`);
+    }
     if (fill) {
       const WIDE = `${PLAYER}:not([is-vertical-video_])`;
       playerVars(WIDE, true);
+      // 横幅いっぱいでも枠の高さは画面に収まる高さまでにする（枠の高さは #player-container-inner の padding-top で幅から決まる）。
+      // 収まらない分は動画の左右に黒帯が出る。高さの上限を指定したときは playerVars がその高さに収める
+      if (!h) {
+        r.push(`${WIDE} #player-container-inner {
+  padding-top: min(calc(var(--ytd-watch-flexy-height-ratio) / var(--ytd-watch-flexy-width-ratio) * 100%), calc(100vh - var(--ytd-watch-flexy-non-player-height))) !important;
+}`);
+      }
       // 列の幅は縦長の動画でも広げる（プレイヤーは列の中で中央に置かれる）。でないと高さの上限を併用したときに列ごと細くなり、左右に余白が出る
       if (!w) {
         r.push(`${PLAYER} #columns { max-width: none !important; }
@@ -387,6 +401,7 @@ ${F} #donation-shelf, ${F} ytd-watch-metadata #product-shelf, ${F} ytd-watch-met
       localStorage.setItem('tubelayout-page', JSON.stringify({
         classic: settings.enabled && settings.classicLayout,
         twoColumnMinWidth: settings.enabled ? num(settings.twoColumnMinWidth) : 0,
+        fixedSidebar: settings.enabled && !!settings.playerFixedFrame,
       }));
     } catch (e) {
       // 書けなければ page.js は既定で動く
