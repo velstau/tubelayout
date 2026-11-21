@@ -70,10 +70,7 @@
   }
   if (status.twoColumnMinWidth) OVERRIDES.kevlar_watch_two_column_width_threshold = status.twoColumnMinWidth;
   if (status.fixedSidebar) OVERRIDES.web_watch_use_sidebar_width_percentage = false;
-  if (!Object.keys(OVERRIDES).length) {
-    report();
-    return;
-  }
+  // 書き換えるフラグがなくても続ける（patchFlags が関連動画の列の幅を割合で決めるかを読み、印を付けるため）
 
   // フラグのオブジェクトを書き換える。後から同じオブジェクトに書き戻されても値を変えさせない
   function patchFlags(flags) {
@@ -85,6 +82,14 @@
       Object.defineProperty(flags, f, { get: () => value, set: () => {}, configurable: true, enumerable: true });
     }
     status.patchedObjects++;
+    // 関連動画の列の幅を動画の縦横比から割合で決めるか（書き換え後の値）。content.js が「縦長の動画も同じ高さにする」で
+    // 縦長の動画の列の幅を 16:9 と同じ割合に上書きするのは、この印があるときだけ（割合で決めないなら列の幅はもともと一定）
+    status.sidebarPercentage = !!flags.web_watch_use_sidebar_width_percentage;
+    try {
+      document.documentElement.toggleAttribute('data-tubelayout-sidebar-pct', status.sidebarPercentage);
+    } catch (e) {
+      // documentElement がまだないときは report と同じく次の機会に書く
+    }
     report();
   }
 

@@ -48,6 +48,10 @@
         hint: '「横幅いっぱい」はプレイヤーの列を横いっぱいに広げ、左右の余白をなくします。プレイヤーの高さは画面に収まるところで止まり、それより横長になる分は動画の左右に黒帯が出ます。' },
         { key: 'playerFixedFrame', type: 'toggle', reload: true, title: '動画の縦横比によらず高さをそろえる',
           hint: 'YouTube は 4:3 などの動画でプレイヤーの高さや関連動画の列の幅を変えます。プレイヤーの枠を 16:9 に固定し、列の幅も一定にします（縦長の動画は除く）。' },
+        { key: 'playerFixedFrameVertical', type: 'toggle', title: '縦長の動画も同じ高さにする',
+          hint: '縦長の動画では YouTube がプレイヤーを画面の高さいっぱいまで伸ばし、タイトルやチャンネル名が画面の下に押し出されます。縦長の動画も 16:9 の枠に入れ、関連動画の列の幅もそろえて、16:9 の動画と同じ配置にします（動画は小さくなり、左右に黒帯が出ます）。' },
+        { key: 'playerFitInfo', type: 'toggle', title: 'タイトルとチャンネル名まで画面に収める',
+          hint: 'YouTube はプレイヤーを画面の高さぎりぎりまで大きくするので、ウィンドウの形によってはチャンネル名の行が画面の下に出ます。プレイヤーの高さの上限をその分だけ下げます。タイトルが 2 行になる動画では収まりません。「高さの上限」を指定したときはそちらが優先です。' },
         { key: 'playerMaxHeight', type: 'range', title: '高さの上限', min: 20, max: 100, step: 1, unit: '%', base: 88, zeroLabel: '既定',
           hint: '画面の高さに対する割合です。' },
         { key: 'playerMaxWidth', type: 'range', title: '幅の上限', min: 480, max: 3000, step: 10, unit: 'px', base: 3000, zeroLabel: '上限なし' },
@@ -290,7 +294,8 @@
     const avail = usable - GAP * 2 - (hasSide ? sideW + GAP : 0);
     const hp = num(s.playerMaxHeight);
     const wp = num(s.playerMaxWidth);
-    const capH = hp ? VH * hp / 100 : VH - 116;
+    // playerFitInfo はタイトルとチャンネル名の行の分（content.js の BELOW_INFO と同じ 56px）を上限から差し引く
+    const capH = hp ? VH * hp / 100 : VH - 116 - (s.playerFitInfo ? 56 + Math.round(Math.max(0, (num(s.titleSize) || 20) - 20) * 1.4) : 0);
     const capW = Math.min(capH * 16 / 9, wp || Infinity);
     const primaryW = s.playerFill && !wp ? avail : Math.min(avail, capW);
     // 横幅いっぱいでは枠が列の幅いっぱいに広がり、高さは上限で止まる（動画の左右に黒帯）
